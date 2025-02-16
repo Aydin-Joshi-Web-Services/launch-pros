@@ -40,7 +40,6 @@ import { UserButton } from "@clerk/nextjs";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Badge } from "@/components/ui/badge";
-import handleBillingButton from "@/hooks/use-portal";
 
 export default function Page() {
   const [owner, setOwner] = useState("");
@@ -146,16 +145,7 @@ export default function Page() {
             </Breadcrumb>
           </div>
           <div className="absolute top-4 right-4">
-            <UserButton>
-              <UserButton.MenuItems>
-                <UserButton.Action
-                  label="View subscription details"
-                  labelIcon={<CardIcon />}
-                  onClick={handleBillingButton}
-                />
-                <UserButton.Action label="manageAccount" />
-              </UserButton.MenuItems>
-            </UserButton>
+            <UserButton />
           </div>
         </header>
         <div className="w-full min-h-screen p-8 space-y-4">

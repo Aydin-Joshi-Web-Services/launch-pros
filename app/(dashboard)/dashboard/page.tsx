@@ -10,6 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -17,7 +18,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { api } from "@/convex/_generated/api";
-import handleBillingButton from "@/hooks/use-portal";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
@@ -42,6 +42,16 @@ export default function Dashboard() {
   );
 
   const [hasCheckedData, setHasCheckedData] = useState(false);
+
+  function handleBillingButton() {
+    const url = process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL!;
+
+    if (url) {
+      router.push(url + "?prefilled_email=" + userData?.email);
+    } else {
+      throw new Error("Failed to edit payment details");
+    }
+  }
 
   useEffect(() => {
     if (!userData || hasCheckedData) return;
@@ -88,18 +98,13 @@ export default function Dashboard() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <div className="absolute top-4 right-4">
-            <UserButton>
-              <UserButton.MenuItems>
-                <UserButton.Action
-                  label="View subscription details"
-                  labelIcon={<CardIcon />}
-                  onClick={handleBillingButton}
-                />
-                <UserButton.Action label="manageAccount" />
-              </UserButton.MenuItems>
-            </UserButton>
-          </div>
+          <div className="absolute top-4 right-4 flex items-center">
+  <Button className="mr-6" variant="outline" onClick={handleBillingButton}>
+    Manage subscription
+  </Button>
+  <UserButton />
+</div>
+
         </header>
         <div className="px-8 py-8 font-dmsans font-medium">
           <p className="text-2xl">Welcome back, {userData.name}!</p>

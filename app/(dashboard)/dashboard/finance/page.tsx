@@ -41,16 +41,7 @@ function Page() {
             </Breadcrumb>
           </div>
           <div className="absolute top-4 right-4">
-            <UserButton>
-              <UserButton.MenuItems>
-                <UserButton.Action
-                  label="View subscription details"
-                  labelIcon={<CardIcon />}
-                  onClick={handleBillingButton}
-                />
-                <UserButton.Action label="manageAccount" />
-              </UserButton.MenuItems>
-            </UserButton>
+            <UserButton />
           </div>
         </header>
         <div className="flex items-center justify-center min-h-screen">
