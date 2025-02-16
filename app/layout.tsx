@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Banner from "@/components/Banner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AppSidebar } from "@/components/Sidebar/app-sidebar";
 
 const clashgrotesk = localFont({
   src: "../public/fonts/clash-grotesk.woff2",

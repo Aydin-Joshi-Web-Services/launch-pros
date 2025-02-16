@@ -36,25 +36,24 @@ import { api } from "@/convex/_generated/api"
 import { ThemeButton } from "../ThemeButton"
 import { useRouter } from "next/navigation"
 
-const DotIcon = () => {
-    return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-      </svg>
-    )
-  }
+const CardIcon = () => {
+  return (
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+  <rect x="2" y="5" width="20" height="14" rx="3" ry="3" fill="#707070"/>
+  <rect x="2" y="9" width="20" height="2" fill="#fff"/>
+  <rect x="2" y="13" width="7" height="2" fill="#fff"/>
+</svg>
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: any
-    email: any
-    avatar: any
-  }
-}) {
+
+  )
+}
+
+export function NavUser() {
 
     const router = useRouter()
+    const { isMobile } = useSidebar()
+    const { user } = useUser()
+    const userData = useQuery(api.users.getByUserId, user ? { userId: user.id } : "skip")
 
   return (
 <SidebarMenu>
@@ -63,18 +62,11 @@ export function NavUser({
       className="flex items-center gap-2 p-4 hover:bg-sidebar-accent cursor-pointer"
       // If you still want some interactivity (like hover or click effects), you can add event handlers here
     >
-      <UserButton>
-        <UserButton.MenuItems>
-          <UserButton.Action
-            label="View Subscription"
-            labelIcon={<DotIcon />}
-            onClick={() => router.push("/dashboard/account/payment")}
-          />
-        </UserButton.MenuItems>
-      </UserButton>
+      
+
       <div className="grid flex-1 text-left text-sm leading-tight">
-        <span className="truncate font-semibold">{user.name}</span>
-        <span className="truncate text-xs">{user.email}</span>
+        <span className="truncate font-semibold">{userData?.name}</span>
+        <span className="truncate text-xs">{userData?.email}</span>
       </div>
       <ThemeButton />
     </div>

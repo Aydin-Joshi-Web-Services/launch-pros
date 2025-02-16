@@ -20,6 +20,7 @@ import {
     MessageSquare,
     Settings2,
     Laptop,
+    Command,
   } from "lucide-react"
 
 import { NavMain } from "@/components/Sidebar/nav-main"
@@ -39,6 +40,7 @@ import { useUser } from "@clerk/nextjs"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { ThemeButton } from "../ThemeButton"
 
   
   const data = {
@@ -161,84 +163,61 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
   }
   
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useUser();
-  const userData = useQuery(
-    api.users.getByUserId, 
-    user ? { userId: user.id } : "skip"
-  );
-  const convexUser = useQuery(api.users.getByUserId, user ? { userId: user.id } : "skip");
-  const platforms = useQuery(
-    api.platforms.by_owner_id,
-    convexUser ? { ownerId: convexUser._id } : "skip"
-  );
-  const [selectedPlatform, setSelectedPlatform] = React.useState(platforms?.[0]?._id);
+  export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { user } = useUser()
+    const userData = useQuery(api.users.getByUserId, user ? { userId: user.id } : "skip")
 
-  if (!userData || !platforms?.length) return null;
-
-  const currentPlatform = platforms.find(p => p._id === selectedPlatform) || platforms[0];
-
-  return (
-    <Sidebar variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <Select
-              value={selectedPlatform} 
-              onValueChange={(value) => setSelectedPlatform(value)}
-            >
-              <SelectTrigger className="w-full border-none shadow-none">
-                <div className="flex items-center gap-3">
-                  <img 
-                    src={currentPlatform.logo} 
-                    className="aspect-square size-8 rounded-lg object-cover"
-                    alt={currentPlatform.name}
-                  />
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <SelectValue placeholder="Select platform">
-                      <span className="font-semibold">{currentPlatform.name}</span>
-                    </SelectValue>
-                  </div>
-                </div>
-              </SelectTrigger>
-              <SelectContent>
-                {platforms.map((platform) => (
-                  <SelectItem 
-                    key={platform._id} 
-                    value={platform._id}
-                    className="flex items-center gap-3 p-2"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img 
-                        src={platform.logo} 
-                        className="aspect-square size-8 rounded-lg object-cover"
-                        alt={platform.name}
-                      />
-                      <div className="grid flex-1">
-                        <span className="font-semibold">{platform.name}</span>
-                      </div>
+    return (
+      <Sidebar variant="inset" {...props}>
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" asChild>
+                <a href="#">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <div className="flex items-center gap-2">
+                      {/* Rounded Logo */}
+                        <img src="/logo.png" className="w-8 h-8 rounded-lg" />
+                      {/* Brand Name */}
                     </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser 
-          user={{
-            name: userData.name, 
-            email: userData.email, 
-            avatar: userData.avatar || "/default-avatar.png"
-          }} 
-        />
-      </SidebarFooter>
-    </Sidebar>
-  );
-}
+                  </div>
+                  <div className="grid flex-1 text-left text-lg leading-tight ml-1">
+                    <span className="truncate font-semibold">LaunchPro</span>
+                  </div>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+  
+        <SidebarContent>
+          <NavMain items={data.navMain} />
+          <NavProjects projects={data.projects} />
+          <NavSecondary items={data.navSecondary} className="mt-auto" />
+        </SidebarContent>
+  
+        <SidebarFooter>
+  <SidebarMenu>
+    <SidebarMenuItem>
+    <div className="flex items-center justify-between p-4">
+              {/* Logo and Company Name on the Left */}
+              <div className="flex items-center gap-4">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <Command className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">SaaS Manager</span>
+                  <span className="truncate text-xs">Enterprise</span>
+                </div>
+              </div>
+              <ThemeButton />
+              </div>
+    </SidebarMenuItem>
+  </SidebarMenu>
+</SidebarFooter>
+
+
+      </Sidebar>
+    );
+  }
+  
