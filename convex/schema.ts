@@ -23,4 +23,5 @@ export default defineSchema({
         .index("by_owner_id", ["ownerId"]) // Lookup all platforms owned by a user
         .index("by_name", ["name"]),
       
+      
 })

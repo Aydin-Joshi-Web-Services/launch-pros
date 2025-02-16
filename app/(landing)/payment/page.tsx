@@ -1,18 +1,17 @@
 "use client"
 
 import { subscribe } from "@/actions/createStripeCheckout";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
-import { Router } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 function Page() {
   const { user } = useUser();
   const userData = useQuery(api.users.getByUserId, user ? { userId: user.id } : "skip");
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     if (!userData) {
@@ -31,36 +30,41 @@ function Page() {
 
   // You can add a loading state here
   if (!userData) {
-    return <div>Loading...</div>; // or a spinner
+    return <div className="text-center py-12">Loading...</div>; // or a spinner
   }
 
   const handlePaymentButton = async () => {
-
     const url = await subscribe({
       userId: userData.userId,
       email: userData.email,
-      priceId: "price_1QsuLAKHmIX2ksaNZk6IY7ey",
-    })
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID as string,
+    });
 
     if (url) {
-      router.push(url)
+      router.push(url);
     } else {
-      throw new Error("Failed to subscribe")
+      throw new Error("Failed to subscribe");
     }
-  }
-
+  };
 
   return (
-    <div>
-    {!userData?.hasActivePlan && (
-    <div>
-    One last step! In order to access our services, you have to pay.
-    <Button onClick={handlePaymentButton}>
-      Pay now
-    </Button>
-  </div>
-    )}
+    <div className="min-h-screen mx-auto px-6 py-12">
+      {!userData?.hasActivePlan && (
+        <div className="bg-white shadow-lg rounded-lg p-8 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">One Last Step!</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            To access all our services, please complete your payment.
+          </p>
+          <Button
+            onClick={handlePaymentButton}
+            className="bg-lime-600 text-white py-2 px-6 rounded-lg shadow-md hover:bg-lime-500 transition-colors duration-200"
+          >
+            Pay Now
+          </Button>
+        </div>
+      )}
     </div>
-  )
+  );
 }
-export default Page
+
+export default Page;

@@ -1,5 +1,6 @@
 "use server"
 
+import baseUrl from "@/lib/baseUrl"
 import { stripe } from "@/lib/stripe"
 
 type Props = {
@@ -37,11 +38,12 @@ export const subscribe = async ({ userId, email, priceId }: Props) => {
                 userId,
             },
             mode: "subscription",
+            allow_promotion_codes: true,
             customer_update: {
                 name: "auto",
             },
-            success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success`,
-            cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/cancel`,
+            success_url: `${baseUrl}/payment/success`,
+            cancel_url: `${baseUrl}/payment/cancel`,
         })
 
         return url

@@ -1,253 +1,133 @@
-'use client'
-
-import React, { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-
-
-export default function Page() {
-  const words = ["Automated", "Intelligent", "Low-Risk"];
-
-  const Blob = () => {
-    return (
-      <motion.div
-        initial={{ rotate: 0 }}
-        animate={{ rotate: 360 }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="absolute w-[500px] h-[300px]"
-        style={{
-          transform: "perspective(1000px) rotateX(30deg)",
-        }}
-      >
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-green-400 blur-2xl opacity-50 mix-blend-screen" />
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-rose-500 via-purple-500 to-blue-500 blur-xl opacity-50 mix-blend-screen transform scale-95" />
-      </motion.div>
-    );
-  };
+import { Button } from "@/components/ui/button"
+import {
+  BrainCogIcon,
+  EyeIcon,
+  GlobeIcon,
+  MonitorSmartphoneIcon,
+  ServerCogIcon,
+  ZapIcon,
+} from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import PricingGrids from "@/components/PricingGrids"
 
 
-  const SquareBackground = () => {
-    const squares = Array.from({ length: 20 });
-    return (
-      <div className="absolute inset-0 overflow-hidden">
-        {squares.map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-4 h-4 bg-blue-500/10 rounded-sm"
-            initial={{
-              opacity: 0.1,
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              rotate: 0
-            }}
-            animate={{
-              opacity: [0.1, 0.15, 0.1],
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              rotate: 360
-            }}
-            transition={{
-              duration: Math.random() * 10 + 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          />
-        ))}
-      </div>
-    );
-  };
+const features = [
+  {
+    name: "Effortless SaaS Management",
+    description: "Manage every aspect of your SaaS business, from marketing and sales to development and growth, all in one place.",
+    icon: GlobeIcon,
+  },
+  {
+    name: "Boost Your Growth",
+    description: "Experience rapid business growth with data-driven insights and tools designed to streamline marketing and sales strategies.",
+    icon: ZapIcon,
+  },
+  {
+    name: "Simplified Financial Tracking",
+    description: "Easily manage and track your SaaS financials, from revenue and expenses to profits, so you can focus on scaling your business.",
+    icon: BrainCogIcon,
+  },
+  {
+    name: "All-in-One Dashboard",
+    description: "Get a comprehensive view of your SaaS business with a single, easy-to-navigate dashboard that tracks your key metrics.",
+    icon: EyeIcon,
+  },
+  {
+    name: "Seamless Integration",
+    description: "Integrate with your existing tools and platforms, saving you time and effort by keeping everything in one place.",
+    icon: ServerCogIcon,
+  },
+  {
+    name: "Access Anywhere, Anytime",
+    description: "Access and manage your SaaS business from any device, whether it's your desktop, tablet, or smartphone, for maximum flexibility.",
+    icon: MonitorSmartphoneIcon,
+  },
+]
 
-// Add this state and effect inside your component, before the return statement
-const [wordIndex, setWordIndex] = useState(0);
-
-useEffect(() => {
-  const interval = setInterval(() => {
-    setWordIndex((prev) => (prev + 1) % words.length);
-  }, 4000);
-  return () => clearInterval(interval);
-}, []);
+export default async function Home() {
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-start relative overflow-hidden pt-5 pb-12">
-      <div>
-        <div className="absolute top-20 -left-40">
-    <Blob />
-  </div>
-  <div className="absolute bottom-20 -right-40">
-    <Blob />
-  </div>
-  <div 
-    className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,rgba(59,130,246,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(59,130,246,0.2)_1px,transparent_1px)] bg-[size:4rem_4rem]"
-    style={{ maskImage: 'radial-gradient(at center, white, transparent)', WebkitMaskImage: 'radial-gradient(at center, white, transparent)' }}
-  />
-  <SquareBackground />
-      {/* Enhanced Background gradients */}
-      <div className="absolute inset-0">
-        {/* Base dark gradient */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-950 via-slate-900 to-slate-950" />
-        
-        {/* Blue accent gradients */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-blue-600/20 via-transparent to-transparent" />
-        
-        {/* Diagonal gradient sweep */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-slate-950/50" />
-        
-        {/* Edge vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-transparent via-slate-950/50 to-slate-950" />
-      </div>
-      
-      {/* Animated gradient orbs */}
-      <div className="absolute inset-0">
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-80 h-80 bg-blue-600/30 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3]
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      </div>
+<main className="flex-1 overflow-scroll p-2 lg:p-5 bg-gradient-to-bl from-lime-400 to-lime-600">
+    <div className="bg-white dark:bg-black py-24 sm:py-32 rounded-md drop-shadow-xl">
+        <div className="flex flex-col justify-center items-center mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl sm:text-center">
+                <h2 className="text-base font-semibold leading-7 text-[#">
+                    Introducing LaunchPro, your All-in-One SaaS Management Tool
+                </h2>
+                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300 sm:text-6xl">
+                    Empowering Developers to Grow Their SaaS
+                </p>
+                <p className="mt-6 text-lg leading-8 text-gray-600">
+                    Say goodbye to struggling with SaaS growth. LaunchPro is here to help you manage every aspect of your SaaS business effortlessly—marketing, sales, financials, and development—all in one platform. Whether you&apos;re a developer or a solopreneur trying to scale your business, LaunchPro is designed for you.
+                </p>
+            </div>
+            <div className="flex justify-center items-center mx-5 mt-10">
+                <div className="text-center">
+                    <Button asChild className="mr-5 text-white">
+                        <Link href="/sign-up">Join our Beta Users</Link>
+                    </Button>
+                    <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+                        We are offering a free 6-month plan to our first 50 beta users!
+                    </p>
+                </div>
+            </div>
+        </div>
 
-      {/* Noise texture overlay */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5 mix-blend-overlay" />
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center pt-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-6"
-        >
-{/* Badge */}
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.2 }}
-  className="inline-block relative"
->
-  {/* Static glow effect */}
-  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/50 to-blue-600/50 rounded-full blur-md opacity-75" />
-  
-  <span className="relative px-4 py-1.5 rounded-full text-sm font-medium bg-slate-800/60 text-white backdrop-blur-sm border border-slate-700/50 flex items-center gap-2">
-    <span className="relative flex h-2 w-2">
-      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-      <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-    </span>
-    🚀 March 1, 2025
-  </span>
-</motion.div>
-
-          {/* Heading */}
-          <motion.h1
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.4 }}
-  className="text-7xl md:text-7xl font-extralight tracking-tight font-dmsans"
->
-  <span className="text-white">
-    <AnimatePresence mode="wait">
-      <motion.span
-        key={words[wordIndex]}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{
-          duration: 0.7,
-          ease: "easeInOut",
-        }}
-        className="inline-block"
-      >
-        {words[wordIndex]}
-      </motion.span>
-    </AnimatePresence>
-    {" Investing"}
-  </span>
-  <br />
-  <span className="bg-gradient-to-r from-[#3B82F6] via-[#60A5FA] to-[#93C5FD] text-transparent bg-clip-text">
-    Powered by AI
-  </span>
-</motion.h1>
-
-          {/* Subheading */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-white text-md md:text-lg max-w-4xl mx-auto font-inter mt-6"
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
           >
-            HedgeAI is an emerging fintech startup that allows individuals to intelligently invest in a matter of seconds - all leveraging OpenAI's o1 model. Sign up for free access on launch day.
-          </motion.p>
-
-          {/* Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto"
-          >
-            <Input
-              type="email"
-              placeholder="Email address..."
-              className="w-full sm:w-72 bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-400 backdrop-blur-sm"
+            <div
+              style={{
+                clipPath:
+                  'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+              }}
+              className="relative left-[calc(50%-14rem)] aspect-[1155/678] w-[50rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#87ff31] to-[#d5ff31] opacity-50 sm:left-[calc(50%-35rem)] sm:w-[80rem]"
             />
-            <Button
-              className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium transition-all duration-200"
-            >
-              Join waitlist
-            </Button>
-          </motion.div>
-        </motion.div>
-      </div>
+          </div>
 
+          <div className="relative overflow-hidden pt-16">
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <Image 
+              alt="App screenshot"
+              src="/hero-image.png"
+              width={2432}
+              height={1442}
+              className="mb-[-0%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
+            />
+            <div aria-hidden="true" className="relative">
+              <div className="absolute bottom-0 -inset-x-32 bg-gradient-to-t from-white/95 pt-[5%] dark:-inset-x-0" />
+            </div>
+            </div>
+          </div>
 
-      {/* Image Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.8 }}
-        className="relative z-10 w-full max-w-6xl mx-auto px-4 mt-16"
-      >
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.4 }}
-          className="relative aspect-video rounded-xl overflow-hidden"
-        >
-          <Image
-            src="/hero-image.png"
-            alt="Application screenshot"
-            width={1920}
-            height={1080}
-            className="rounded-xl shadow-2xl ring-1 ring-white/10 object-cover"
-          />
-          {/* Modified gradient overlay for better blend with background */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
-        </motion.div>
-      </motion.div>
-    </div>
-    </div>
-  );
+          <div className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8">
+            <dl className="mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16">
+              {features.map((feature) => (
+                <div key={feature.name} className="relative pl-9">
+                  <dt className="inline font-semibold text-gray-900">
+                    <feature.icon 
+                      aria-hidden="true"
+                      className="absolute left-1 top-1 h-5 w-5 text-lime-500"
+                    />
+                  </dt>
+
+                  <dd>{feature.description}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="py-24 sm:px-32 mt-5">
+            <div className="max-w-4xl mx-auto text-center">
+              <p className=" text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-300 sm:text-4xl">
+                One subscription makes it easy
+              </p>
+            </div>
+            <PricingGrids />
+          </div>
+        </div>
+    </main>
+  )
 }

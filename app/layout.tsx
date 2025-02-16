@@ -6,10 +6,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "../components/providers/ConvexClientProvider";
 import SyncUserWithConvex from "@/components/SyncUserWithConvex";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import Banner from "@/components/Banner";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { AppSidebar } from "@/components/Sidebar/app-sidebar";
 
 const clashgrotesk = localFont({
   src: "../public/fonts/clash-grotesk.woff2",
@@ -29,7 +25,7 @@ const dmsans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "SaaS Management for Solopreneurs | LaunchPros",
+  title: "SaaS Management for Developers | LaunchPro",
 };
 
 export default function RootLayout({
@@ -43,7 +39,7 @@ export default function RootLayout({
         <body className="min-h-screen">
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >

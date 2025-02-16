@@ -18,6 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
+import { Badge } from "../ui/badge"
 
 export function NavMain({
   items,
@@ -27,6 +28,7 @@ export function NavMain({
     url: string
     icon: LucideIcon
     isActive?: boolean
+    beta?: boolean
     items?: {
       title: string
       url: string
@@ -43,7 +45,10 @@ export function NavMain({
               <SidebarMenuButton asChild tooltip={item.title}>
                 <a href={item.url}>
                   <item.icon />
+                  <div className="space-x-2">
                   <span>{item.title}</span>
+                  {item.beta && <Badge className="text-xs bg-[#d5ff31] text-black font-medium hover:bg-[#d5ff31]">Beta</Badge> }
+                  </div>
                 </a>
               </SidebarMenuButton>
               {item.items?.length ? (

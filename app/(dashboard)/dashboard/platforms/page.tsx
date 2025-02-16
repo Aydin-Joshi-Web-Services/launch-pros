@@ -27,7 +27,7 @@ function Platforms() {
 
       {platforms.length === 0 ? (
         <div className="flex flex-col items-center">
-          <p className="text-gray-500 mb-4">You haven't created any platforms yet.</p>
+          <p className="text-gray-500 mb-4">You haven&apos;t created any platforms yet.</p>
           <Button onClick={() => router.push('/dashboard/platforms/create')}>
             Create a Platform
           </Button>
@@ -44,7 +44,7 @@ function Platforms() {
             </CardHeader>
           </Card>
 
-          {platforms.map((platform: any) => (
+          {platforms.map((platform) => (
             <Card key={platform._id} className="hover:shadow-lg transition-shadow">
               <CardHeader className="flex flex-row items-center gap-4">
                   <img src={platform.logo} className="w-12 h-12 rounded-full" />

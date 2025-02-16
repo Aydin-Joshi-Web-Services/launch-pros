@@ -27,3 +27,16 @@ export const by_owner_id = query({
         .collect();
     }
 })
+
+export const update = mutation({
+  args: {
+    id: v.id("platforms"),
+    name: v.string(),
+    description: v.string(),
+    logo: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const { id, ...updates } = args;
+    await ctx.db.patch(id, updates);
+  },
+});

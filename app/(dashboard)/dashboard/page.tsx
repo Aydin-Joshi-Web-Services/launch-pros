@@ -1,11 +1,7 @@
-"use client"
+"use client";
 
-import { api } from "@/convex/_generated/api"
-import { UserButton, useUser } from "@clerk/nextjs"
-import { useQuery } from "convex/react"
-import { redirect, useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { AppSidebar } from "@/components/Sidebar/app-sidebar"
+import CardIcon from "@/components/CardIcon";
+import { AppSidebar } from "@/components/Sidebar/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,54 +9,63 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-
-const CardIcon = () => {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-      <rect x="2" y="5" width="20" height="14" rx="3" ry="3" fill="#707070"/>
-      <rect x="2" y="9" width="20" height="2" fill="#fff"/>
-      <rect x="2" y="13" width="7" height="2" fill="#fff"/>
-    </svg>
-  )
-}
+} from "@/components/ui/sidebar";
+import { api } from "@/convex/_generated/api";
+import handleBillingButton from "@/hooks/use-portal";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const router = useRouter()
-  const { user } = useUser()
-  const userData = useQuery(api.users.getByUserId, user ? { userId: user.id } : "skip")
+  const router = useRouter();
+  const { user } = useUser();
+
+  // Get user data and platforms
+  const userData = useQuery(
+    api.users.getByUserId,
+    user ? { userId: user.id } : "skip"
+  );
+  const convexUser = useQuery(
+    api.users.getByUserId,
+    user ? { userId: user.id } : "skip"
+  );
+  const platforms = useQuery(
+    api.platforms.by_owner_id,
+    convexUser ? { ownerId: convexUser._id } : "skip"
+  );
+
+  const [hasCheckedData, setHasCheckedData] = useState(false);
 
   useEffect(() => {
-    if (!userData) {
-      // If user data is still loading, do nothing
-      redirect("/sign-in")
-    }
+    if (!userData || hasCheckedData) return;
+
+    // Mark that the data check has occurred
+    setHasCheckedData(true);
 
     if (!userData.hasActivePlan) {
       // Redirect to payment page if no active plan
       router.push("/payment");
+      return;
     }
-  }, [userData, router]);
 
-  // You can add a loading state here
-  if (!userData) {
+    // Check if platforms data has loaded and user has no platforms
+    if (platforms !== undefined && platforms.length === 0) {
+      // Redirect to onboarding if no platforms exist
+      router.push("/dashboard/onboarding");
+      return;
+    }
+  }, [userData, platforms, router, hasCheckedData]);
+
+  // Loading state while checking user data and platforms
+  if (!userData || platforms === undefined) {
     return <div>Loading...</div>; // or a spinner
-  }
-
-  const handleBillingButton = async () => {
-    const url = process.env.NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL!
-
-    if (url) {
-      router.push(url + "?prefilled_email=" + userData?.email)
-    } else {
-      throw new Error("Failed to edit payment details")
-    }
   }
 
   return (
@@ -74,9 +79,7 @@ export default function Dashboard() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/dashboard">
-                    Dashboard
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -111,5 +114,5 @@ export default function Dashboard() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
